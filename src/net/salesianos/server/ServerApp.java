@@ -18,16 +18,26 @@ import java.util.Set;
 import net.salesianos.server.threads.ClientHandler;
 import net.salesianos.utils.Constants;
 
+/**
+ * Clase principal para la aplicación del servidor.
+ * Este servidor permite gestionar las conexiones de clientes y realizar un sistema de votación.
+ */
 public class ServerApp {
 
     // Opciones de votación (puedes modificarlas aquí)
-  public static final List<String> votingOptions = new ArrayList<>(Arrays.asList("Pepe", "Isra", "Luison"));
+    public static final List<String> votingOptions = new ArrayList<>(Arrays.asList("Pepe", "Isra", "Luison"));
 
     // Contador de votos para cada opción
     public static final Map<String, Integer> voteCounts = new HashMap<>();
     // Set para rastrear clientes que ya han votado
     public static final Set<DataOutputStream> votedClients = new HashSet<>();
 
+    /**
+     * Método principal que inicia el servidor y maneja las conexiones entrantes.
+     *
+     * @param args Argumentos de la línea de comandos (no utilizados).
+     * @throws IOException Si ocurre un error al conectar con el servidor.
+     */
     public static void main(String[] args) throws IOException {
         // Inicializar el contador de votos para cada opción a 0
         for (String option : votingOptions) {
@@ -51,12 +61,12 @@ public class ServerApp {
 
             ClientHandler clientHandler = new ClientHandler(
                     clientInputStream,
-                    clientOutputStream, // Pass clientOutputStream instead of ArrayList of all outputs
+                    clientOutputStream,
                     name,
-                    clientsOutputs, // Still pass the list for broadcasting messages (optional feature)
+                    clientsOutputs,
                     votingOptions,
                     voteCounts,
-                    votedClients // Pass the set of voted clients
+                    votedClients
             );
             clientHandler.start();
         }
